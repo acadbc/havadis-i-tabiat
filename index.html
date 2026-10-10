@@ -1,0 +1,840 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Havadis-i Tabîat — Günlük Gazete</title>
+
+<style>
+:root {
+  --bg: #f8f6f1;
+  --paper: #fffefa;
+  --text: #202020;
+  --muted: #77736d;
+  --line: #dedbd3;
+  --accent: #a51e32;
+  --soft: #efebe3;
+}
+
+body.dark {
+  --bg: #171717;
+  --paper: #222222;
+  --text: #f2efe9;
+  --muted: #aaa49b;
+  --line: #414141;
+  --accent: #f16b7d;
+  --soft: #303030;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  transition: background .25s, color .25s;
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  max-width: 1180px;
+  margin: auto;
+  padding: 0 25px;
+}
+
+/* ÜST BİLGİ */
+
+.topbar {
+  border-bottom: 1px solid var(--line);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.topbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.topbar button {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--text);
+  border-radius: 20px;
+  padding: 7px 12px;
+}
+
+/* LOGO */
+
+.masthead {
+  text-align: center;
+  padding: 28px 0 23px;
+  border-bottom: 4px double var(--text);
+}
+
+.logo {
+  font-size: clamp(43px, 8vw, 78px);
+  font-weight: 900;
+  letter-spacing: -4px;
+  line-height: 1;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.tagline {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+/* NAVİGASYON */
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  font-family: Arial, sans-serif;
+}
+
+.nav button {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 13px;
+  border-radius: 4px;
+}
+
+.nav button:hover,
+.nav button.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* MANŞET */
+
+.section-label {
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(250px, 1fr);
+  gap: 30px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero {
+  min-width: 0;
+  border-right: 1px solid var(--line);
+  padding-right: 30px;
+}
+
+.hero img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 20px;
+  background: var(--soft);
+}
+
+.category {
+  color: var(--accent);
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 4vw, 45px);
+  line-height: 1.08;
+  letter-spacing: -1px;
+  margin-bottom: 14px;
+}
+
+.summary {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.65;
+  margin-bottom: 15px;
+}
+
+.meta {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* YAN SÜTUN */
+
+.sidebar h2 {
+  font-size: 25px;
+  padding-bottom: 13px;
+  border-bottom: 2px solid var(--text);
+  margin-bottom: 5px;
+}
+
+.brief {
+  padding: 17px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.brief h3 {
+  font-size: 18px;
+  line-height: 1.35;
+  margin-bottom: 7px;
+}
+
+.brief p {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* HABER LİSTESİ */
+
+.news-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 28px 0 20px;
+}
+
+.news-heading h2 {
+  font-size: 29px;
+}
+
+.search {
+  width: 220px;
+  max-width: 50%;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 10px 12px;
+  background: var(--paper);
+  color: var(--text);
+  outline: none;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+.search:focus {
+  border-color: var(--accent);
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+  padding-bottom: 40px;
+}
+
+.card {
+  min-width: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px #0000000c;
+}
+
+.card img {
+  width: 100%;
+  height: 175px;
+  object-fit: cover;
+  display: block;
+  background: var(--soft);
+}
+
+.card-content {
+  padding: 17px;
+}
+
+.card h3 {
+  font-size: 22px;
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
+.card p.description {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.read-more {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.empty {
+  display: none;
+  color: var(--muted);
+  text-align: center;
+  padding: 30px 0;
+  grid-column: 1 / -1;
+  font-family: Arial, sans-serif;
+}
+
+/* ALT KISIM */
+
+.footer {
+  border-top: 4px double var(--text);
+  text-align: center;
+  padding: 24px 0 30px;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.footer strong {
+  font-family: Georgia, serif;
+  color: var(--text);
+  font-size: 23px;
+}
+
+/* HABER PENCERESİ */
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000a;
+  z-index: 10;
+  padding: 20px;
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-box {
+  position: relative;
+  width: min(650px, 100%);
+  background: var(--paper);
+  color: var(--text);
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.modal-box h2 {
+  font-size: 32px;
+  line-height: 1.2;
+  margin-bottom: 15px;
+}
+
+.modal-box p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 28px;
+}
+
+@media (max-width: 760px) {
+  .container {
+    padding: 0 17px;
+  }
+
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .hero {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .hero img {
+    height: 240px;
+  }
+
+  .sidebar {
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+  }
+
+  .news-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .card img {
+    height: 145px;
+  }
+
+  .card-content {
+    padding: 12px;
+  }
+
+  .card h3 {
+    font-size: 19px;
+  }
+
+  .card p.description {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar-inner {
+    font-size: 10px;
+  }
+
+  .logo {
+    letter-spacing: -2px;
+  }
+
+  .tagline {
+    letter-spacing: 2px;
+  }
+
+  .nav {
+    gap: 2px;
+  }
+
+  .nav button {
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .news-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card img {
+    height: 200px;
+  }
+
+  .news-heading h2 {
+    font-size: 23px;
+  }
+
+  .search {
+    width: 145px;
+  }
+
+  .modal-box {
+    padding: 24px 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <span id="today">10 Ekim 2026, Cumartesi</span>
+    <span>Bağımsız • Güncel • Özgür</span>
+    <button id="themeToggle" aria-label="Temayı değiştir">🌙 Gece modu</button>
+  </div>
+</div>
+
+<header class="container masthead">
+  <div class="logo">Havadis-i <span>Tabîat</span></div>
+  <div class="tagline">DÜNYADAN VE TÜRKİYE'DEN HABERLER</div>
+</header>
+
+<nav class="container nav" aria-label="Haber kategorileri">
+  <button class="active" data-category="Tümü">Tümü</button>
+  <button data-category="Gündem">Gündem</button>
+  <button data-category="Dünya">Dünya</button>
+  <button data-category="Ekonomi">Ekonomi</button>
+  <button data-category="Teknoloji">Teknoloji</button>
+  <button data-category="Kültür">Kültür</button>
+  <button data-category="Spor">Spor</button>
+</nav>
+
+<main class="container">
+
+  <section class="main-grid">
+
+    <article class="hero">
+      <div class="section-label">◆ Günün manşeti</div>
+
+      <img
+        src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1200&q=85"
+        alt="Şehir manzarası"
+      >
+
+      <div class="category">Gündem</div>
+
+      <h1>Şehirlerde yeni bir dönem: Geleceğin yaşam alanları nasıl olacak?</h1>
+
+      <p class="summary">
+        Daha yeşil sokaklar, akıllı ulaşım sistemleri ve yeni nesil yaşam
+        alanları şehir hayatını yeniden şekillendirebilir.
+      </p>
+
+      <div class="meta">Editör Masası · 5 dakika okuma</div>
+    </article>
+
+    <aside class="sidebar">
+      <h2>Günün Özeti</h2>
+
+      <article class="brief">
+        <div class="category">Teknoloji</div>
+        <h3>Yapay zekâ günlük hayatın yeni yardımcısı oluyor</h3>
+        <p>Dijital araçlar, çalışma ve öğrenme alışkanlıklarını değiştiriyor.</p>
+      </article>
+
+      <article class="brief">
+        <div class="category">Ekonomi</div>
+        <h3>Yerel üretime ve küçük işletmelere ilgi artıyor</h3>
+        <p>Yeni girişimler, mahalle ekonomilerinin önemini yeniden gündeme taşıyor.</p>
+      </article>
+
+      <article class="brief">
+        <div class="category">Kültür</div>
+        <h3>Kitaplar ve sanat yeniden buluşma noktası</h3>
+        <p>Kültür etkinlikleri, şehirlerde sosyal yaşamı canlandırıyor.</p>
+      </article>
+
+      <article class="brief">
+        <div class="category">Yaşam</div>
+        <h3>Doğayla iç içe yaşam fikri öne çıkıyor</h3>
+        <p>Parklar ve yürüyüş alanları modern şehir planlamasında yer buluyor.</p>
+      </article>
+    </aside>
+
+  </section>
+
+  <section>
+    <div class="news-heading">
+      <h2>Son Haberler</h2>
+      <input
+        class="search"
+        type="search"
+        id="searchInput"
+        placeholder="Haber ara..."
+        aria-label="Haberlerde ara"
+      >
+    </div>
+
+    <div class="news-grid" id="newsGrid">
+
+      <article class="card" data-category="Teknoloji">
+        <img
+          src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80"
+          alt="Elektronik devre kartı"
+          loading="lazy"
+        >
+        <div class="card-content">
+          <div class="category">Teknoloji</div>
+          <h3>Dijital dünyada yeni fikirlerin zamanı</h3>
+          <p class="description">
+            Yeni araçlar, üretme ve öğrenme biçimlerine farklı kapılar açıyor.
+          </p>
+          <button class="read-more"
+            data-title="Dijital dünyada yeni fikirlerin zamanı"
+            data-text="Dijital teknolojiler, bilgiye ulaşmayı ve fikirleri hayata geçirmeyi kolaylaştırıyor. Uzmanlar, teknolojinin bilinçli kullanılmasının ve dijital becerilerin geliştirilmesinin önemine dikkat çekiyor.">
+            Haberi oku →
+          </button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Dünya">
+        <img
+          src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=700&q=80"
+          alt="Modern çalışma alanı"
+          loading="lazy"
+        >
+        <div class="card-content">
+          <div class="category">Dünya</div>
+          <h3>Çalışma hayatında esnek düzen arayışı</h3>
+          <p class="description">
+            Yeni nesil ofisler, iş ve özel yaşam arasındaki dengeyi gündeme getiriyor.
+          </p>
+          <button class="read-more"
+            data-title="Çalışma hayatında esnek düzen arayışı"
+            data-text="Çalışma ortamları değişirken esnek saatler, ortak çalışma alanları ve uzaktan çalışma seçenekleri tartışılmaya devam ediyor. Şirketler, verimlilik ile çalışanların ihtiyaçlarını birlikte değerlendirmeye çalışıyor.">
+            Haberi oku →
+          </button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Ekonomi">
+        <img
+          src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=700&q=80"
+          alt="Grafiklerle dolu bilgisayar ekranı"
+          loading="lazy"
+        >
+        <div class="card-content">
+          <div class="category">Ekonomi</div>
+          <h3>Küçük işletmeler dijitalleşmeye yöneliyor</h3>
+          <p class="description">
+            Çevrim içi mağazalar ve dijital ödeme çözümleri yeni fırsatlar sunuyor.
+          </p>
+          <button class="read-more"
+            data-title="Küçük işletmeler dijitalleşmeye yöneliyor"
+            data-text="Küçük işletmeler, müşterilerine daha kolay ulaşabilmek için dijital kanallara yatırım yapıyor. Çevrim içi satış, sosyal medya ve dijital ödeme sistemleri bu dönüşümün öne çıkan başlıkları arasında.">
+            Haberi oku →
+          </button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Kültür">
+        <img
+          src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=700&q=80"
+          alt="Kitaplarla dolu kütüphane"
+          loading="lazy"
+        >
+        <div class="card-content">
+          <div class="category">Kültür</div>
+          <h3>Kütüphaneler yeniden keşfediliyor</h3>
+          <p class="description">
+            Sessiz çalışma alanları ve kitap etkinlikleri her yaştan okuru buluşturuyor.
+          </p>
+          <button class="read-more"
+            data-title="Kütüphaneler yeniden keşfediliyor"
+            data-text="Kütüphaneler yalnızca kitap ödünç alınan yerler değil; aynı zamanda öğrenme, araştırma ve bir araya gelme alanları olarak görülüyor. Okuma kulüpleri ve kültür buluşmaları bu mekânlara yeni bir boyut kazandırıyor.">
+            Haberi oku →
+          </button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Spor">
+        <img
+          src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=700&q=80"
+          alt="Koşu yapan sporcular"
+          loading="lazy"
+        >
+        <div class="card-content">
+          <div class="category">Spor</div>
+          <h3>Hareketli yaşam için küçük adımlar</h3>
+          <p class="description">
+            Yürüyüş, koşu ve açık hava etkinlikleri günlük rutine renk katıyor.
+          </p>
+          <button class="read-more"
+            data-title="Hareketli yaşam için küçük adımlar"
+            data-text="Günlük yaşama hareket katmak için büyük hedefler belirlemek gerekmiyor. Düzenli yürüyüşler ve kişisel seviyeye uygun egzersizler, aktif bir yaşam alışkanlığı oluşturmanın yolları arasında sayılıyor.">
+            Haberi oku →
+          </button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Gündem">
+        <img
+          src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=700&q=80"
+          alt="Yeşil tepeler ve doğa"
+          loading="lazy"
+        >
+        <div class="card-content">
+          <div class="category">Gündem</div>
+          <h3>Yeşil alanlar şehir yaşamının merkezinde</h3>
+          <p class="description">
+            Kent parkları, doğayla buluşmak isteyenler için önemli alanlar sunuyor.
+          </p>
+          <button class="read-more"
+            data-title="Yeşil alanlar şehir yaşamının merkezinde"
+            data-text="Şehirlerdeki yeşil alanlar dinlenme, spor ve sosyal buluşmalar için değerli bir rol oynuyor. Parkların erişilebilirliği ve korunması, sürdürülebilir kent yaşamı tartışmalarında öne çıkıyor.">
+            Haberi oku →
+          </button>
+        </div>
+      </article>
+
+      <p class="empty" id="emptyMessage">
+        Aramana uygun haber bulunamadı.
+      </p>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <strong>GÜNDEM</strong>
+    <p>Her gün yeni bir bakış açısı.</p>
+    <p>© <span id="year">2026</span> Gündem Gazetesi · Demo tasarım</p>
+    <p>Bu sayfadaki haber metinleri örnek içeriktir, gerçek haber olarak değerlendirilmemelidir.</p>
+  </div>
+</footer>
+
+<!-- HABER OKUMA PENCERESİ -->
+
+<div class="modal" id="newsModal" role="dialog"
+  aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <button class="close" id="closeModal" aria-label="Kapat">×</button>
+    <div class="category">Haberin devamı</div>
+    <h2 id="modalTitle"></h2>
+    <p id="modalText"></p>
+  </div>
+</div>
+
+<script>
+// Tarih
+const now = new Date();
+
+document.getElementById("today").textContent =
+  new Intl.DateTimeFormat("tr-TR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    weekday: "long"
+  }).format(now);
+
+document.getElementById("year").textContent = now.getFullYear();
+
+// Karanlık tema
+const themeToggle = document.getElementById("themeToggle");
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  const dark = document.body.classList.contains("dark");
+
+  themeToggle.textContent = dark
+    ? "☀️ Gündüz modu"
+    : "🌙 Gece modu";
+});
+
+// Kategori filtreleme
+const categoryButtons = document.querySelectorAll(".nav button");
+const cards = document.querySelectorAll(".card");
+const searchInput = document.getElementById("searchInput");
+const emptyMessage = document.getElementById("emptyMessage");
+
+let selectedCategory = "Tümü";
+
+function filterNews() {
+  const searchTerm = searchInput.value
+    .toLocaleLowerCase("tr-TR")
+    .trim();
+
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const category = card.dataset.category;
+    const text = card.textContent.toLocaleLowerCase("tr-TR");
+
+    const matchesCategory =
+      selectedCategory === "Tümü" ||
+      category === selectedCategory;
+
+    const matchesSearch = text.includes(searchTerm);
+    const visible = matchesCategory && matchesSearch;
+
+    card.style.display = visible ? "" : "none";
+
+    if (visible) visibleCount++;
+  });
+
+  emptyMessage.style.display =
+    visibleCount === 0 ? "block" : "none";
+}
+
+categoryButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    categoryButtons.forEach(item =>
+      item.classList.remove("active")
+    );
+
+    button.classList.add("active");
+    selectedCategory = button.dataset.category;
+
+    filterNews();
+
+    document.querySelector(".news-heading")
+      .scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+// Haber arama
+searchInput.addEventListener("input", filterNews);
+
+// Haber detay penceresi
+const modal = document.getElementById("newsModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalText = document.getElementById("modalText");
+const closeModal = document.getElementById("closeModal");
+
+document.querySelectorAll(".read-more").forEach(button => {
+  button.addEventListener("click", () => {
+    modalTitle.textContent = button.dataset.title;
+    modalText.textContent = button.dataset.text;
+
+    modal.classList.add("open");
+    closeModal.focus();
+  });
+});
+
+function hideModal() {
+  modal.classList.remove("open");
+}
+
+closeModal.addEventListener("click", hideModal);
+
+modal.addEventListener("click", event => {
+  if (event.target === modal) hideModal();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") hideModal();
+});
+</script>
+
+</body>
+</html>
